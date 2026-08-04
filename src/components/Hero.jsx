@@ -64,29 +64,17 @@ export default function Hero() {
       style={{ "--mx": "50%", "--my": "40%" }}
     >
       {/* parallax portrait, blended into the background */}
-      <motion.div
-        aria-hidden="true"
-        style={{ y: imgY, scale: imgScale }}
-        className="pointer-events-none absolute inset-y-0 right-0 w-full md:w-[62%] will-change-transform"
-      >
-        <img
-          src={profileImg}
-          alt=""
-          className="h-full w-full object-cover object-[75%_20%] opacity-30 md:opacity-45"
-          style={{
-            filter: "grayscale(1) contrast(1.1) brightness(0.75)",
-            maskImage:
-              "linear-gradient(to left, black 35%, transparent 92%), linear-gradient(to bottom, black 70%, transparent 100%), linear-gradient(to top, black 85%, transparent 100%)",
-            maskComposite: "intersect",
-            WebkitMaskImage:
-              "linear-gradient(to left, black 35%, transparent 92%), linear-gradient(to bottom, black 70%, transparent 100%), linear-gradient(to top, black 85%, transparent 100%)",
-            WebkitMaskComposite: "source-in",
-          }}
-        />
-        {/* duotone wash to keep it on-palette */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gold/20 via-transparent to-violet/30 mix-blend-color" />
-        <div className="absolute inset-0 bg-gradient-to-t from-bg via-transparent to-transparent" />
-      </motion.div>
+     <motion.div
+  aria-hidden="true"
+  style={{ y: imgY, scale: imgScale }}
+  className="pointer-events-none absolute inset-0 will-change-transform"
+>
+ <img src="src\assets\profileBack.png" alt="" />
+
+  <div className="absolute inset-0 bg-gradient-to-br from-gold/20 via-transparent to-violet/30" />
+  <div className="absolute inset-0 bg-black/45" />
+  <div className="absolute inset-0 bg-gradient-to-t from-bg via-transparent to-transparent" />
+</motion.div>
 
       {/* ambient gradient mesh */}
       <div
