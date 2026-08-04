@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, Download, Github, Linkedin, Mail } from "lucide-react";
 import { profile } from "../data/content";
 import profileImg from "../assets/profile.jpg";
-import profileBack from "../assets/profileBack.png";
+import profileBack from "../assets/ProfileBack2.png";
 
 
 const REQUEST_LINE = "GET /souhayb-hadi HTTP/1.1";
