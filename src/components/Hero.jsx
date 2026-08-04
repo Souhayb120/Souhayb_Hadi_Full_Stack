@@ -111,7 +111,7 @@ export default function Hero() {
               <img
                 src={profileImg}
                 alt={profile.name}
-                className="h-14 w-14 sm:h-16 sm:w-16 rounded-full object-cover object-top border-2 border-bg"
+                className="h-25 w-25 sm:h-25 sm:w-25 rounded-full object-cover object-top border-2 border-bg"
               />
             </motion.div>
 
