@@ -69,7 +69,7 @@ export default function Hero() {
   style={{ y: imgY, scale: imgScale }}
   className="pointer-events-none absolute inset-0 will-change-transform"
 >
- <img src="src\assets\profileBack.png" alt="" />
+ <img src="../assets/profileBack.png" alt="" />
 
   <div className="absolute inset-0 bg-gradient-to-br from-gold/20 via-transparent to-violet/30" />
   <div className="absolute inset-0 bg-black/45" />
