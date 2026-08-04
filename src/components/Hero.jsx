@@ -3,6 +3,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, Download, Github, Linkedin, Mail } from "lucide-react";
 import { profile } from "../data/content";
 import profileImg from "../assets/profile.jpg";
+import profileBack from "../assets/profileBack.png";
+
 
 const REQUEST_LINE = "GET /souhayb-hadi HTTP/1.1";
 
@@ -69,7 +71,7 @@ export default function Hero() {
   style={{ y: imgY, scale: imgScale }}
   className="pointer-events-none absolute inset-0 will-change-transform"
 >
- <img src="../assets/profileBack.png" alt="" />
+ <img src={profileBack} alt="" />
 
   <div className="absolute inset-0 bg-gradient-to-br from-gold/20 via-transparent to-violet/30" />
   <div className="absolute inset-0 bg-black/45" />
