@@ -6,7 +6,7 @@ export const profile = {
   email: "souhaybhadi06@gmail.com",
   phone: "+212 6 39 42 92 94",
   github: "https://github.com/Souhayb120",
-  linkedin: "https://www.linkedin.com/",
+  linkedin: "https://www.linkedin.com/in/souhayb-hadi/",
   summary:
     "Full Stack Java/Spring Boot and React developer specializing in secure REST APIs, resilient data layers, and clean interfaces — from the database to the browser.",
   status: "Open to opportunities",
