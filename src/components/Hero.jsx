@@ -161,7 +161,7 @@ export default function Hero() {
               View projects
             </a>
             <a
-              href="/Souhayb_Hadi_Resume.pdf"
+              href="/CV_SOUHAYB_HADI_FULL_STACK_DEVLOPER.pdf"
               download
               className="inline-flex items-center gap-2 rounded-lg glass px-5 py-3 text-sm font-medium text-ink hover:border-gold/40 transition-colors"
             >
