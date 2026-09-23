@@ -13,6 +13,7 @@ function NeuralCanvas() {
     let raf;
     let width, height;
     let nodes = [];
+    let started = false;
 
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -33,7 +34,7 @@ function NeuralCanvas() {
       }));
     };
 
-    const draw = () => {
+    const step = () => {
       ctx.clearRect(0, 0, width, height);
       ctx.fillStyle = "rgba(124, 92, 255, 0.55)";
       for (const n of nodes) {
@@ -61,16 +62,35 @@ function NeuralCanvas() {
           }
         }
       }
-      raf = requestAnimationFrame(draw);
+      if (!prefersReduced) raf = requestAnimationFrame(step);
+    };
+
+    const start = () => {
+      if (started) return;
+      started = true;
+      raf = requestAnimationFrame(step);
+    };
+
+    const stop = () => {
+      started = false;
+      cancelAnimationFrame(raf);
     };
 
     resize();
     window.addEventListener("resize", resize);
-    if (!prefersReduced) raf = requestAnimationFrame(draw);
-    else draw();
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) start();
+        else stop();
+      },
+      { rootMargin: "300px" }
+    );
+    io.observe(canvas);
 
     return () => {
-      cancelAnimationFrame(raf);
+      stop();
+      io.disconnect();
       window.removeEventListener("resize", resize);
     };
   }, []);

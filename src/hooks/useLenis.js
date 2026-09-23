@@ -1,23 +1,41 @@
 import { useEffect } from "react";
-import Lenis from "lenis";
 
 export default function useLenis() {
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      smoothWheel: true,
-      smoothTouch: false,
-      wheelMultiplier: 0.9,
-      touchMultiplier: 1.5,
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+
+    if (prefersReduced || coarsePointer) return;
+
+    let cancelled = false;
+    let lenis;
+    let raf;
+
+    import("lenis").then(({ default: Lenis }) => {
+      if (cancelled) return;
+
+      lenis = new Lenis({
+        duration: 1.2,
+        smoothWheel: true,
+        smoothTouch: false,
+        wheelMultiplier: 0.9,
+        touchMultiplier: 1.5,
+      });
+
+      const loop = (time) => {
+        lenis.raf(time);
+        raf = requestAnimationFrame(loop);
+      };
+
+      raf = requestAnimationFrame(loop);
     });
 
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-
-    return () => lenis.destroy();
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf);
+      lenis?.destroy();
+    };
   }, []);
 }

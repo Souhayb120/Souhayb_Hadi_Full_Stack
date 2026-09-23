@@ -38,7 +38,7 @@ src/
 
 - **Content** (name, projects, skills, experience, etc.) — edit `src/data/content.js` only. Nothing else needs to change for a copy update.
 - **Colors / fonts** — edit the `@theme` block at the top of `src/index.css`.
-- **Resume download** — the hero's "Resume" button links to `/Souhayb_Hadi_Resume.pdf`. Drop your PDF into `public/` with that filename (or update the `href` in `src/components/Hero.jsx`) to make the download work.
+- **Resume download** — the hero's "Resume" button imports the PDF directly (`import resumePdf from "../assets/CV_Full_Stack_Developer_Souhayb_Hadi_V5.pdf"` in `src/components/Hero.jsx`), so it is bundled into `dist/` with a hashed URL. Replace the file in `src/assets/` (or update the import) to rotate the CV.
 - **Contact form** — it's client-side only (validates and shows a confirmation state) with no backend wired up. To actually receive messages, connect it to a form service (e.g. Formspree, Resend) or your own API endpoint inside `src/components/Contact.jsx`'s `handleSubmit`.
 
 ## Deploying

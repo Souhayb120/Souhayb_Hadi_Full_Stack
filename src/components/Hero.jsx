@@ -2,8 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, Download, Github, Linkedin, Mail } from "lucide-react";
 import { profile } from "../data/content";
-import profileImg from "../assets/profile.jpg";
-import profileBack from "../assets/ProfileBack2.png";
+import resumePdf from "../assets/CV_Full_Stack_Developer_Souhayb_Hadi_V5.pdf";
+import heroBackAvif720 from "../assets/hero-back-720.avif";
+import heroBackAvif1024 from "../assets/hero-back-1024.avif";
+import heroBackWebp720 from "../assets/hero-back-720.webp";
+import heroBackWebp1024 from "../assets/hero-back-1024.webp";
+import heroBackFallback from "../assets/hero-back-1024.jpg";
+import avatarAvif200 from "../assets/avatar-200.avif";
+import avatarAvif400 from "../assets/avatar-400.avif";
+import avatarWebp200 from "../assets/avatar-200.webp";
+import avatarWebp400 from "../assets/avatar-400.webp";
+import avatarFallback from "../assets/avatar-400.jpg";
 
 
 const REQUEST_LINE = "GET /souhayb-hadi HTTP/1.1";
@@ -17,21 +26,21 @@ const RESPONSE_LINES = [
   '}',
 ];
 
-export default function Hero() {
+function TerminalCard() {
   const [typed, setTyped] = useState("");
   const [showResponse, setShowResponse] = useState(false);
-  const heroRef = useRef(null);
-
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
-  const imgScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   useEffect(() => {
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (prefersReduced) {
+      setTyped(REQUEST_LINE);
+      setShowResponse(true);
+      return;
+    }
+
     let i = 0;
     const interval = setInterval(() => {
       i++;
@@ -43,6 +52,64 @@ export default function Hero() {
     }, 45);
     return () => clearInterval(interval);
   }, []);
+
+  return (
+    <div className="glass rounded-2xl overflow-hidden gold-glow">
+      <div className="flex items-center gap-1.5 px-4 py-3 border-b border-line">
+        <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#27c93f]" />
+        <span className="ml-3 font-mono text-xs text-muted">request.http</span>
+      </div>
+      <div className="p-5 font-mono text-sm leading-relaxed">
+        <p className="text-ink">
+          <span className="text-violet">{typed}</span>
+          {!showResponse && <span className="caret" />}
+        </p>
+        <motion.div
+          initial={false}
+          animate={{ opacity: showResponse ? 1 : 0, y: showResponse ? 0 : 8 }}
+          transition={{ duration: 0.4 }}
+          aria-hidden={!showResponse}
+          className={showResponse ? "" : "pointer-events-none"}
+        >
+          <p className="text-muted mt-3">
+            HTTP/1.1 <span className="text-gold">200 OK</span>
+          </p>
+          <p className="text-muted">Content-Type: application/json</p>
+          <div className="mt-3 space-y-0.5">
+            {RESPONSE_LINES.map((line, idx) => (
+              <motion.p
+                key={idx}
+                initial={false}
+                animate={{
+                  opacity: showResponse ? 1 : 0,
+                  x: showResponse ? 0 : -6,
+                }}
+                transition={{ duration: 0.3, delay: showResponse ? idx * 0.08 : 0 }}
+                className="text-ink whitespace-pre-wrap break-words"
+              >
+                {line}
+              </motion.p>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+export default function Hero() {
+  const heroRef = useRef(null);
+
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
+  const imgScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   useEffect(() => {
     const el = heroRef.current;
@@ -71,7 +138,26 @@ export default function Hero() {
   style={{ y: imgY, scale: imgScale }}
   className="pointer-events-none absolute inset-0 will-change-transform"
 >
- <img src={profileBack} alt="" />
+ <picture>
+  <source
+    type="image/avif"
+    srcSet={`${heroBackAvif720} 720w, ${heroBackAvif1024} 1024w`}
+    sizes="100vw"
+  />
+  <source
+    type="image/webp"
+    srcSet={`${heroBackWebp720} 720w, ${heroBackWebp1024} 1024w`}
+    sizes="100vw"
+  />
+  <img
+    src={heroBackFallback}
+    alt=""
+    width="1024"
+    height="1537"
+    fetchPriority="high"
+    decoding="async"
+  />
+</picture>
 
   <div className="absolute inset-0 bg-gradient-to-br from-gold/20 via-transparent to-violet/30" />
   <div className="absolute inset-0 bg-black/45" />
@@ -108,11 +194,26 @@ export default function Hero() {
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               className="shrink-0 rounded-full bg-gradient-to-br from-gold to-violet p-[2.5px] gold-glow"
             >
-              <img
-                src={profileImg}
-                alt={profile.name}
-                className="h-25 w-25 sm:h-25 sm:w-25 rounded-full object-cover object-top border-2 border-bg"
-              />
+              <picture>
+                <source
+                  type="image/avif"
+                  srcSet={`${avatarAvif200} 200w, ${avatarAvif400} 400w`}
+                  sizes="100px"
+                />
+                <source
+                  type="image/webp"
+                  srcSet={`${avatarWebp200} 200w, ${avatarWebp400} 400w`}
+                  sizes="100px"
+                />
+                <img
+                  src={avatarFallback}
+                  alt={profile.name}
+                  width="200"
+                  height="200"
+                  decoding="async"
+                  className="h-25 w-25 sm:h-25 sm:w-25 rounded-full object-cover object-top border-2 border-bg"
+                />
+              </picture>
             </motion.div>
 
             <div className="inline-flex items-center gap-2 rounded-full glass px-3 py-1.5 font-mono text-xs text-muted">
@@ -161,7 +262,7 @@ export default function Hero() {
               View projects
             </a>
             <a
-              href="/CV_SOUHAYB_HADI_FULL_STACK_DEVLOPER.pdf"
+              href={resumePdf}
               download
               className="inline-flex items-center gap-2 rounded-lg glass px-5 py-3 text-sm font-medium text-ink hover:border-gold/40 transition-colors"
             >
@@ -193,45 +294,8 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20, scale: 0.97 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.3 }}
-          className="glass rounded-2xl overflow-hidden gold-glow"
         >
-          <div className="flex items-center gap-1.5 px-4 py-3 border-b border-line">
-            <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f56]" />
-            <span className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]" />
-            <span className="h-2.5 w-2.5 rounded-full bg-[#27c93f]" />
-            <span className="ml-3 font-mono text-xs text-muted">request.http</span>
-          </div>
-          <div className="p-5 font-mono text-sm leading-relaxed">
-            <p className="text-ink">
-              <span className="text-violet">{typed}</span>
-              {!showResponse && <span className="caret" />}
-            </p>
-            {showResponse && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
-              >
-                <p className="text-muted mt-3">
-                  HTTP/1.1 <span className="text-gold">200 OK</span>
-                </p>
-                <p className="text-muted">Content-Type: application/json</p>
-                <div className="mt-3 space-y-0.5">
-                  {RESPONSE_LINES.map((line, idx) => (
-                    <motion.p
-                      key={idx}
-                      initial={{ opacity: 0, x: -6 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.3, delay: idx * 0.08 }}
-                      className="text-ink whitespace-pre-wrap break-words"
-                    >
-                      {line}
-                    </motion.p>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </div>
+          <TerminalCard />
         </motion.div>
       </motion.div>
 
