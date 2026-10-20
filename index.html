@@ -7,11 +7,19 @@
     <meta name="description" content="Souhayb Hadi — Full Stack Java/Spring Boot & React Developer, Béni Mellal, Morocco." />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..700&display=swap" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400..600&family=Caveat:wght@500..700&display=swap" media="print" onload="this.media='all'">
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&family=Inter:wght@400..700&family=JetBrains+Mono:wght@400..700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400..600&family=Caveat:wght@500..700&display=swap">
     </noscript>
-    <meta name="theme-color" content="#0c0a07">
+    <meta name="theme-color" content="#0a0e1a">
+    <script>
+      try {
+        if (localStorage.getItem("theme") === "day") {
+          document.documentElement.dataset.theme = "day";
+          document.querySelector('meta[name="theme-color"]').setAttribute("content", "#dce5f0");
+        }
+      } catch (e) {}
+    </script>
     <title>Souhayb Hadi — Full Stack Developer</title>
   </head>
   <body>

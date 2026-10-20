@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { setLenis } from "../lib/scroll";
 
 export default function useLenis() {
   useEffect(() => {
@@ -17,12 +18,12 @@ export default function useLenis() {
       if (cancelled) return;
 
       lenis = new Lenis({
-        duration: 1.2,
+        lerp: 0.085, // lower = silkier glide
         smoothWheel: true,
-        smoothTouch: false,
-        wheelMultiplier: 0.9,
-        touchMultiplier: 1.5,
+        wheelMultiplier: 0.95,
+        anchors: { offset: -72 },
       });
+      setLenis(lenis);
 
       const loop = (time) => {
         lenis.raf(time);
@@ -35,6 +36,7 @@ export default function useLenis() {
     return () => {
       cancelled = true;
       cancelAnimationFrame(raf);
+      setLenis(null);
       lenis?.destroy();
     };
   }, []);

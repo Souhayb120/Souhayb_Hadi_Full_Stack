@@ -1,16 +1,9 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  AlertCircle,
-  CheckCircle2,
-  Github,
-  Linkedin,
-  Loader2,
-  Mail,
-  Phone,
-} from "lucide-react";
-import SectionLabel from "./SectionLabel";
+import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
+import { ScrollSection, SectionTitle, Reveal, Stagger, Item } from "./motion";
 import { profile } from "../data/content";
+import { burstFrom } from "../lib/fun";
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xyeggnrn";
 
@@ -20,10 +13,17 @@ const initialForm = {
   message: "",
 };
 
+const fields = [
+  { id: "name", label: "Name", type: "text", placeholder: "Your name" },
+  { id: "email", label: "Email", type: "email", placeholder: "you@example.com" },
+  { id: "message", label: "Message", placeholder: "Tell me about the role or project...", multiline: true },
+];
+
 export default function Contact() {
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
+  const submitRef = useRef(null);
 
   const validate = () => {
     const e = {};
@@ -72,6 +72,7 @@ export default function Contact() {
       }
 
       setStatus("sent");
+      burstFrom(submitRef.current, 48);
       setForm(initialForm);
       setErrors({});
 
@@ -83,197 +84,109 @@ export default function Contact() {
     }
   };
 
+  const update = (id, value) => {
+    setForm((prev) => ({ ...prev, [id]: value }));
+    if (errors[id]) setErrors((prev) => ({ ...prev, [id]: "" }));
+  };
+
   return (
-    <section id="contact" className="relative py-28 px-6">
-      <div className="mx-auto max-w-6xl">
-        <SectionLabel
-          status={200}
-          route="/contact"
-          title="Let's build something"
-        />
+    <ScrollSection id="contact" className="px-6 py-16 md:py-24">
+      <div className="mx-auto max-w-3xl">
+        <SectionTitle>Get in touch</SectionTitle>
 
-        <div className="grid gap-12 md:grid-cols-[0.9fr_1.1fr]">
-          <div>
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full glass px-3 py-1.5 font-mono text-xs text-muted">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gold" />
-              {profile.status}
-            </div>
+        <Reveal as="p" className="max-w-2xl text-lg leading-relaxed text-muted">
+          Have a role, project, or idea in mind? I'd love to hear about it. Email me at{" "}
+          <a href={`mailto:${profile.email}`} className="link">
+            {profile.email}
+          </a>
+          , call {profile.phone}, or use the form below.
+        </Reveal>
 
-            <p className="max-w-sm leading-relaxed text-muted">
-              Have a role, project, or idea in mind? I'd love to hear about it.
-              Reach out directly or send me a message.
-            </p>
+        <Stagger
+          as="form"
+          onSubmit={handleSubmit}
+          noValidate
+          className="mt-10 grid gap-5 rounded-2xl border border-line bg-surface/50 p-6 sm:grid-cols-2 md:p-8"
+        >
+          {fields.map((f) => {
+            const Field = f.multiline ? "textarea" : "input";
+            return (
+              <Item key={f.id} className={f.multiline ? "sm:col-span-2" : ""}>
+                <label htmlFor={f.id} className="mb-1.5 block text-sm text-muted">
+                  {f.label}
+                </label>
+                <Field
+                  id={f.id}
+                  type={f.type}
+                  rows={f.multiline ? 5 : undefined}
+                  value={form[f.id]}
+                  onChange={(e) => update(f.id, e.target.value)}
+                  placeholder={f.placeholder}
+                  aria-invalid={Boolean(errors[f.id])}
+                  className={`field ${f.multiline ? "resize-none" : ""}`}
+                />
+                <AnimatePresence>
+                  {errors[f.id] && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      className="mt-1.5 text-sm text-rose"
+                    >
+                      {errors[f.id]}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </Item>
+            );
+          })}
 
-            <div className="mt-8 space-y-4">
-              <a
-                href={`mailto:${profile.email}`}
-                className="flex items-center gap-3 text-sm text-ink transition-colors hover:text-gold"
-              >
-                <Mail size={16} className="text-gold" />
-                {profile.email}
-              </a>
-
-              <a
-                href={`tel:${profile.phone.replace(/\s/g, "")}`}
-                className="flex items-center gap-3 text-sm text-ink transition-colors hover:text-gold"
-              >
-                <Phone size={16} className="text-gold" />
-                {profile.phone}
-              </a>
-
-              <div className="flex items-center gap-3 pt-2">
-                <a
-                  href={profile.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-lg glass p-2.5 text-muted transition-colors hover:text-ink"
-                  aria-label="GitHub"
-                >
-                  <Github size={18} />
-                </a>
-
-                <a
-                  href={profile.linkedin}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-lg glass p-2.5 text-muted transition-colors hover:text-ink"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin size={18} />
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <form
-            onSubmit={handleSubmit}
-            noValidate
-            className="glass space-y-5 rounded-2xl p-6 md:p-8"
-          >
-            <div>
-              <label htmlFor="name" className="font-mono text-xs text-muted">
-                Name
-              </label>
-
-              <input
-                id="name"
-                type="text"
-                value={form.name}
-                onChange={(e) => {
-                  setForm({ ...form, name: e.target.value });
-
-                  if (errors.name) {
-                    setErrors((prev) => ({ ...prev, name: "" }));
-                  }
-                }}
-                className="mt-1.5 w-full rounded-lg border border-line bg-surface-2 px-4 py-3 text-sm text-ink outline-none transition-colors focus:border-gold"
-                placeholder="Your name"
-              />
-
-              {errors.name && (
-                <p className="mt-1 text-xs text-amber">{errors.name}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="email" className="font-mono text-xs text-muted">
-                Email
-              </label>
-
-              <input
-                id="email"
-                type="email"
-                value={form.email}
-                onChange={(e) => {
-                  setForm({ ...form, email: e.target.value });
-
-                  if (errors.email) {
-                    setErrors((prev) => ({ ...prev, email: "" }));
-                  }
-                }}
-                className="mt-1.5 w-full rounded-lg border border-line bg-surface-2 px-4 py-3 text-sm text-ink outline-none transition-colors focus:border-gold"
-                placeholder="you@example.com"
-              />
-
-              {errors.email && (
-                <p className="mt-1 text-xs text-amber">{errors.email}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="message" className="font-mono text-xs text-muted">
-                Message
-              </label>
-
-              <textarea
-                id="message"
-                rows={5}
-                value={form.message}
-                onChange={(e) => {
-                  setForm({ ...form, message: e.target.value });
-
-                  if (errors.message) {
-                    setErrors((prev) => ({ ...prev, message: "" }));
-                  }
-                }}
-                className="mt-1.5 w-full resize-none rounded-lg border border-line bg-surface-2 px-4 py-3 text-sm text-ink outline-none transition-colors focus:border-gold"
-                placeholder="Tell me about the role or project..."
-              />
-
-              {errors.message && (
-                <p className="mt-1 text-xs text-amber">
-                  {errors.message}
-                </p>
-              )}
-            </div>
-
-            <button
+          <Item className="flex flex-wrap items-center gap-4 sm:col-span-2">
+            <motion.button
+              ref={submitRef}
               type="submit"
               disabled={status === "sending"}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-gold py-3 text-sm font-medium text-[#231a06] transition-colors hover:bg-gold-dim disabled:cursor-not-allowed disabled:opacity-60"
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-2.5 font-medium text-bg transition-colors hover:bg-ink disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {status === "sending" && (
-                <Loader2 size={16} className="animate-spin" />
-              )}
-
-              {status === "sending" ? "Sending..." : "Send Message"}
-            </button>
+              {status === "sending" && <Loader2 size={16} className="animate-spin" />}
+              {status === "sending" ? "Sending..." : "Send message"}
+            </motion.button>
 
             <AnimatePresence mode="wait">
               {status === "sent" && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  className="flex items-center gap-2 font-mono text-sm text-gold"
+                <motion.p
+                  key="sent"
+                  initial={{ opacity: 0, x: -6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="flex items-center gap-2 text-sm text-aurora"
                 >
                   <CheckCircle2 size={16} />
-                  Message sent successfully. I'll get back to you soon.
-                </motion.div>
+                  Thanks! I'll get back to you soon.
+                </motion.p>
               )}
 
               {status === "error" && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  className="flex items-center gap-2 font-mono text-sm text-amber"
+                <motion.p
+                  key="error"
+                  initial={{ opacity: 0, x: -6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="flex flex-wrap items-center gap-2 text-sm text-rose"
                 >
                   <AlertCircle size={16} />
                   Something went wrong. Please email me directly at{" "}
-                  <a
-                    href={`mailto:${profile.email}`}
-                    className="underline hover:text-gold"
-                  >
+                  <a href={`mailto:${profile.email}`} className="underline">
                     {profile.email}
                   </a>
-                  .
-                </motion.div>
+                </motion.p>
               )}
             </AnimatePresence>
-          </form>
-        </div>
+          </Item>
+        </Stagger>
       </div>
-    </section>
+    </ScrollSection>
   );
 }

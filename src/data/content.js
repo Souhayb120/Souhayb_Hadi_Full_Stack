@@ -9,7 +9,6 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/souhayb-hadi/",
   summary:
     "Full Stack Java/Spring Boot and React developer specializing in secure REST APIs, resilient data layers, and clean interfaces — from the database to the browser.",
-  status: "Open to opportunities",
 };
 
 export const stats = [
@@ -46,7 +45,31 @@ export const skills = [
 
 export const projects = [
   {
+    id: "kottabi",
+    image: "/images/projects/kottabi",
+    name: "Kottabi",
+    tag: "Quranic School Management System",
+    description:
+      "A full-stack platform for managing Quranic schools, students, teachers, attendance, Quran memorization progress, and competitions — with AI-powered progress reports and PDF generation.",
+    stack: ["Spring Boot", "Spring Security", "React", "MySQL", "Redis", "Docker", "JWT", "Spring AI", "Gemini"],
+    features: [
+      "Management of schools, students and teachers",
+      "Attendance tracking",
+      "Quran memorization progress tracking",
+      "Competitions",
+      "AI-powered progress reports with Spring AI and Gemini",
+      "PDF generation",
+    ],
+    links: [
+      { label: "Backend on GitHub", href: "https://github.com/Souhayb120/Kottabi_Kottab_Management_System_BackEnd" },
+      { label: "Frontend on GitHub", href: "https://github.com/Souhayb120/Kottabi_Kottab_Management_System_FrontEnd" },
+    ],
+    status: "200",
+    accent: "gold",
+  },
+  {
     id: "healthcare",
+    image: "/images/projects/healthcare",
     name: "HealthCare",
     tag: "Hospital Management System",
     description:
@@ -64,6 +87,7 @@ export const projects = [
   },
   {
     id: "fleetflow",
+    image: "/images/projects/fleetflow",
     name: "FleetFlow",
     tag: "Fleet Management Platform",
     description:
@@ -82,6 +106,7 @@ export const projects = [
 
   {
     id: "enaa",
+    image: "/images/projects/enaa",
     name: "Enaa's Store",
     tag: "Mini Online Shop",
     description:
@@ -100,11 +125,11 @@ export const projects = [
 
 export const experience = [
   {
-    period: "2025 — Present",
-    title: "Full Stack Developer — Training",
+    period: "2025 — 2026",
+    title: "Full Stack Developer — Training (completed)",
     org: "Ahmed El Hansali Digital School, Béni Mellal",
     description:
-      "Building production-style full-stack applications end to end: Spring Boot APIs secured with JWT, MySQL/PostgreSQL data layers, and React front-ends.",
+      "Built production-style full-stack applications end to end: Spring Boot APIs secured with JWT, MySQL/PostgreSQL data layers, and React front-ends.",
   },
   {
     period: "2022 — 2024",
@@ -117,7 +142,7 @@ export const experience = [
 
 export const education = [
   {
-    period: "2025 — Present",
+    period: "2025 — 2026",
     title: "Full Stack Developer",
     org: "Ahmed El Hansali Digital School (ENAA), Béni Mellal",
   },
