@@ -146,20 +146,9 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        <p
-          style={riseDelay(0.15)}
-          className="rise mt-10 inline-flex items-center gap-2 rounded-full border border-aurora/30 bg-aurora/10 px-3 py-1 text-[13px] font-medium text-aurora"
-        >
-          <span aria-hidden="true" className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-aurora opacity-60" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-aurora" />
-          </span>
-          Open to full-stack roles
-        </p>
-
         <h1
           style={riseDelay(0.2)}
-          className="rise mt-5 font-display text-[2.6rem] font-normal leading-[1.1] tracking-tight text-ink md:text-6xl"
+          className="rise mt-10 font-display text-[2.6rem] font-normal leading-[1.1] tracking-tight text-ink md:text-6xl"
         >
           Hi, I'm <RubberWord text="Souhayb" />. I build web apps with <Scribble onMount delay={1}>Java</Scribble> and React.
         </h1>
