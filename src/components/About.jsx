@@ -5,7 +5,7 @@ export default function About() {
   return (
     <ScrollSection id="about" className="px-6 py-16 md:py-20">
       <div className="mx-auto max-w-3xl">
-        <SectionTitle>About</SectionTitle>
+        <SectionTitle index={1}>About</SectionTitle>
 
         <div className="space-y-5 text-lg leading-relaxed text-muted">
           <Reveal as="p">

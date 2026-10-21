@@ -24,8 +24,19 @@ function SkillRow({ group, index }) {
       style={{ x, opacity, rotate }}
       className="grid gap-1 py-4 sm:grid-cols-[8rem_1fr] sm:gap-6"
     >
-      <dt className="font-medium text-ink">{group.category}</dt>
-      <dd className="leading-relaxed text-muted">{group.items.map((s) => s.name).join(", ")}</dd>
+      <dt className="font-medium text-ink sm:pt-1">{group.category}</dt>
+      <dd>
+        <ul className="flex flex-wrap gap-2">
+          {group.items.map((s) => (
+            <li
+              key={s.name}
+              className="rounded-full border border-line bg-surface/60 px-3 py-1 text-sm text-muted transition-colors duration-200 hover:border-accent/50 hover:text-ink"
+            >
+              {s.name}
+            </li>
+          ))}
+        </ul>
+      </dd>
     </motion.div>
   );
 }
@@ -34,7 +45,7 @@ export default function Skills() {
   return (
     <ScrollSection id="skills" className="overflow-x-clip px-6 py-16 md:py-20">
       <div className="mx-auto max-w-3xl">
-        <SectionTitle>What I work with</SectionTitle>
+        <SectionTitle index={3}>What I work with</SectionTitle>
         <dl className="divide-y divide-line border-y border-line">
           {groups.map((g, i) => (
             <SkillRow key={g.category} group={g} index={i} />

@@ -19,6 +19,7 @@ export default function Sky({ theme }) {
           exit={{ opacity: 1, zIndex: 0, transition: { duration: FADE } }}
           transition={{ duration: FADE, ease: "easeInOut" }}
           className="absolute inset-0"
+          data-sky={theme}
         >
           {theme === "day" ? <DaySky /> : <NightSky />}
         </motion.div>

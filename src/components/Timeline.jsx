@@ -12,7 +12,7 @@ export default function Timeline() {
   return (
     <ScrollSection id="experience" className="px-6 py-16 md:py-20">
       <div className="mx-auto max-w-3xl">
-        <SectionTitle>Experience & education</SectionTitle>
+        <SectionTitle index={4}>Experience & education</SectionTitle>
         <div ref={listRef} className="relative pl-7">
           <span aria-hidden="true" className="absolute left-[5px] top-2 bottom-2 w-px bg-line" />
           <motion.span

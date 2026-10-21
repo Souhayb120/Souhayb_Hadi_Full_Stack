@@ -18,19 +18,23 @@ const rise = (delay) => ({
   transition: { duration: 0.7, ease, delay },
 });
 
+// same entrance as rise(), done in CSS (.rise) so the prerendered text shows before JS loads
+const riseDelay = (delay) => ({ animationDelay: `${delay}s` });
+
 const NOTES = [
   "that's me!",
-  "hey, that tickles!",
-  "ok, stop it",
-  "wheee!",
-  "fine, one more",
+  "200 OK — still here",
+  "fully tested, I promise",
+  "available for hire, btw",
+  "no bugs found (yet)",
   "now try dragging my name",
 ];
 
 // letters you can grab and fling — they spring back home
 function RubberWord({ text }) {
   return (
-    <span className="inline-block whitespace-nowrap" aria-label={text}>
+    <span className="inline-block whitespace-nowrap">
+      <span className="sr-only">{text}</span>
       {text.split("").map((ch, i) => (
         <motion.span
           key={i}
@@ -142,20 +146,31 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        <motion.h1
-          {...rise(0.2)}
-          className="mt-10 font-display text-[2.6rem] font-normal leading-[1.1] tracking-tight text-ink md:text-6xl"
+        <p
+          style={riseDelay(0.15)}
+          className="rise mt-10 inline-flex items-center gap-2 rounded-full border border-aurora/30 bg-aurora/10 px-3 py-1 text-[13px] font-medium text-aurora"
+        >
+          <span aria-hidden="true" className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-aurora opacity-60" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-aurora" />
+          </span>
+          Open to full-stack roles
+        </p>
+
+        <h1
+          style={riseDelay(0.2)}
+          className="rise mt-5 font-display text-[2.6rem] font-normal leading-[1.1] tracking-tight text-ink md:text-6xl"
         >
           Hi, I'm <RubberWord text="Souhayb" />. I build web apps with <Scribble onMount delay={1}>Java</Scribble> and React.
-        </motion.h1>
+        </h1>
 
-        <motion.p {...rise(0.35)} className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
+        <p style={riseDelay(0.35)} className="rise mt-6 max-w-2xl text-lg leading-relaxed text-muted">
           I'm a full-stack developer from {profile.location}, and I recently completed my Full Stack training at Ahmed El Hansali
           Digital School. Most of what I build sits on the backend: Spring Boot APIs, JWT auth, and
           MySQL or PostgreSQL databases kept in order with Flyway. Then a React front-end on top.
-        </motion.p>
+        </p>
 
-        <motion.div {...rise(0.5)} className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-[15px]">
+        <div style={riseDelay(0.5)} className="rise mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-[15px]">
           <motion.a
             href={resumePdf}
             download="Souhayb_Hadi_CV.pdf"
@@ -169,7 +184,7 @@ export default function Hero() {
           <a href={profile.github} target="_blank" rel="noreferrer" className="link">GitHub</a>
           <a href={profile.linkedin} target="_blank" rel="noreferrer" className="link">LinkedIn</a>
           <a href={`mailto:${profile.email}`} className="link">Email</a>
-        </motion.div>
+        </div>
       </motion.div>
     </section>
   );

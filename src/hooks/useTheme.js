@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
 import { flushSync } from "react-dom";
 
 const THEME_COLOR = { night: "#0a0e1a", day: "#dce5f0" };
@@ -17,12 +17,23 @@ function readStored() {
   }
 }
 
+// Tiny store so the prerendered HTML (always night) hydrates cleanly and then
+// switches to the stored theme without a hydration mismatch.
+let current = typeof window === "undefined" ? "night" : readStored();
+const listeners = new Set();
+const subscribe = (fn) => {
+  listeners.add(fn);
+  return () => listeners.delete(fn);
+};
+const setTheme = (next) => {
+  current = next;
+  listeners.forEach((fn) => fn());
+};
+
 export default function useTheme() {
-  const [theme, setTheme] = useState(readStored);
-  const themeRef = useRef(theme);
+  const theme = useSyncExternalStore(subscribe, () => current, () => "night");
 
   useEffect(() => {
-    themeRef.current = theme;
     document.documentElement.dataset.theme = theme;
     document.querySelector('meta[name="theme-color"]')?.setAttribute("content", THEME_COLOR[theme]);
     try {
@@ -34,7 +45,7 @@ export default function useTheme() {
 
   const toggle = useCallback((event) => {
     const root = document.documentElement;
-    const next = themeRef.current === "night" ? "day" : "night";
+    const next = current === "night" ? "day" : "night";
     const apply = () => {
       root.dataset.theme = next;
       flushSync(() => setTheme(next));

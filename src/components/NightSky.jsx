@@ -26,18 +26,24 @@ const SHOOTING = [
   { top: "30%", left: "20%", delay: 9, repeatDelay: 15 },
 ];
 
-function StarLayer({ stars, drift, scrollY, still }) {
+// twinkle is CSS (.twinkle); reduced motion cuts it short and leaves the base 0.5 opacity
+function StarLayer({ stars, drift, scrollY }) {
   const y = useTransform(scrollY, [0, 3000], [0, drift]);
   return (
     <motion.div style={{ y }} className="absolute inset-x-0 top-0 h-[140vh]">
       {stars.map((s, i) => (
-        <motion.span
+        <span
           key={i}
-          initial={{ opacity: 0.2 }}
-          animate={still ? { opacity: 0.5 } : { opacity: [0.15, 0.85, 0.15] }}
-          transition={{ duration: s.duration, delay: s.delay, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute rounded-full bg-ink"
-          style={{ left: `${s.x}%`, top: `${s.y / 1.4}%`, width: s.size, height: s.size }}
+          className="twinkle absolute rounded-full bg-ink"
+          style={{
+            left: `${s.x}%`,
+            top: `${s.y / 1.4}%`,
+            width: s.size,
+            height: s.size,
+            opacity: 0.5,
+            animationDuration: `${s.duration}s`,
+            animationDelay: `${s.delay}s`,
+          }}
         />
       ))}
     </motion.div>
@@ -83,7 +89,7 @@ export default function NightSky() {
       />
 
       {LAYERS.map((layer, i) => (
-        <StarLayer key={i} {...layer} scrollY={scrollY} still={still} />
+        <StarLayer key={i} {...layer} scrollY={scrollY} />
       ))}
 
       {/* moon */}
@@ -113,23 +119,23 @@ export default function NightSky() {
         />
       </motion.div>
 
-      {/* shooting stars */}
-      {!still &&
-        SHOOTING.map((s, i) => (
-          <motion.span
-            key={i}
-            initial={{ opacity: 0, x: 0, y: 0 }}
-            animate={{ opacity: [0, 1, 0], x: [0, -260], y: [0, 160] }}
-            transition={{ duration: 1.1, delay: s.delay, repeat: Infinity, repeatDelay: s.repeatDelay, ease: "easeOut" }}
-            className="absolute h-px w-24 origin-right"
-            style={{
-              rotate: -32,
-              top: s.top,
-              left: s.left,
-              background: "linear-gradient(to left, transparent, var(--color-ink))",
-            }}
-          />
-        ))}
+      {/* shooting stars — always rendered (just never animated for reduced motion)
+          so the prerendered markup matches what hydrates */}
+      {SHOOTING.map((s, i) => (
+        <motion.span
+          key={i}
+          initial={{ opacity: 0, x: 0, y: 0 }}
+          animate={still ? undefined : { opacity: [0, 1, 0], x: [0, -260], y: [0, 160] }}
+          transition={{ duration: 1.1, delay: s.delay, repeat: Infinity, repeatDelay: s.repeatDelay, ease: "easeOut" }}
+          className="absolute h-px w-24 origin-right"
+          style={{
+            rotate: -32,
+            top: s.top,
+            left: s.left,
+            background: "linear-gradient(to left, transparent, var(--color-ink))",
+          }}
+        />
+      ))}
 
       {/* fade the bottom so content sections sit on calmer sky */}
       <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-bg/70 to-transparent" />

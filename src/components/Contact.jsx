@@ -92,7 +92,7 @@ export default function Contact() {
   return (
     <ScrollSection id="contact" className="px-6 py-16 md:py-24">
       <div className="mx-auto max-w-3xl">
-        <SectionTitle>Get in touch</SectionTitle>
+        <SectionTitle index={6}>Get in touch</SectionTitle>
 
         <Reveal as="p" className="max-w-2xl text-lg leading-relaxed text-muted">
           Have a role, project, or idea in mind? I'd love to hear about it. Email me at{" "}

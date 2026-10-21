@@ -5,7 +5,7 @@ export default function AISection() {
   return (
     <ScrollSection id="ai" className="px-6 py-16 md:py-20">
       <div className="mx-auto max-w-3xl">
-        <SectionTitle note="still figuring these out">What I'm learning now</SectionTitle>
+        <SectionTitle index={5} note="still figuring these out">What I'm learning now</SectionTitle>
         <Reveal as="p" className="max-w-2xl leading-relaxed text-muted">
           I'm extending my backend foundation into applied AI, connecting language models to the same
           REST APIs, databases and auth layers I already build rather than treating AI as a separate

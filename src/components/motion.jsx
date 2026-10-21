@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { Fragment, useRef } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ease, viewport, fadeUp } from "./motionTokens";
 import useScrollWobble from "../hooks/useScrollWobble";
@@ -98,39 +98,49 @@ export function Scribble({ children, delay = 0.4, onMount = false }) {
 function WavyText({ text }) {
   let n = 0;
   return (
-    <span aria-label={text}>
+    <span>
+      <span className="sr-only">{text}</span>
       {text.split(" ").map((word, w) => (
-        <span key={w} aria-hidden="true" className="inline-block whitespace-nowrap">
-          {word.split("").map((ch) => {
-            const i = n++;
-            return (
-              <motion.span
-                key={i}
-                className="inline-block"
-                variants={{
-                  rest: { y: 0, rotate: 0 },
-                  wave: {
-                    y: [0, -10, 0],
-                    rotate: [0, i % 2 ? 8 : -8, 0],
-                    transition: { duration: 0.45, delay: i * 0.03 },
-                  },
-                }}
-              >
-                {ch}
-              </motion.span>
-            );
-          })}
-          {w < text.split(" ").length - 1 && " "}
-        </span>
+        <Fragment key={w}>
+          {/* the space sits between the word blocks: a trailing space inside an inline-block gets collapsed */}
+          {w > 0 && <span aria-hidden="true"> </span>}
+          <span aria-hidden="true" className="inline-block whitespace-nowrap">
+            {word.split("").map((ch) => {
+              const i = n++;
+              return (
+                <motion.span
+                  key={i}
+                  className="inline-block"
+                  variants={{
+                    rest: { y: 0, rotate: 0 },
+                    wave: {
+                      y: [0, -10, 0],
+                      rotate: [0, i % 2 ? 8 : -8, 0],
+                      transition: { duration: 0.45, delay: i * 0.03 },
+                    },
+                  }}
+                >
+                  {ch}
+                </motion.span>
+              );
+            })}
+          </span>
+        </Fragment>
       ))}
     </span>
   );
 }
 
-export function SectionTitle({ children, note }) {
+export function SectionTitle({ children, note, index }) {
   const skewY = useScrollWobble(2.5);
   return (
     <Reveal className="mb-8 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+      {index && (
+        <span aria-hidden="true" className="flex basis-full items-center gap-3 text-xs font-medium tracking-[0.2em] text-accent">
+          {String(index).padStart(2, "0")}
+          <span className="h-px w-10 bg-accent/40" />
+        </span>
+      )}
       <motion.h2
         initial="rest"
         whileHover="wave"

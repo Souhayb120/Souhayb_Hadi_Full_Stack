@@ -1,5 +1,29 @@
 @import "tailwindcss";
 
+/* self-hosted latin subsets (from Google Fonts): same origin, preloaded by scripts/prerender.js,
+   so they land early instead of re-laying out the page mid-hydration */
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: optional;
+  src: url("./assets/fonts/fraunces-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: optional;
+  src: url("./assets/fonts/inter-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Caveat";
+  font-style: normal;
+  font-weight: 500 700;
+  font-display: optional;
+  src: url("./assets/fonts/caveat-latin.woff2") format("woff2");
+}
+
 @theme {
   --font-display: "Fraunces", Georgia, serif;
   --font-body: "Inter", system-ui, sans-serif;
@@ -113,3 +137,36 @@ html, body {
 }
 .field::placeholder { color: color-mix(in oklab, var(--color-muted) 70%, transparent); }
 .field:focus { border-color: var(--color-accent); }
+
+/* hero entrance — plain CSS so the prerendered text animates before the JS arrives.
+   Slide only, no fade: text at opacity 0 does not count as painted, which would delay FCP/LCP. */
+.rise {
+  animation: rise 0.7s cubic-bezier(0.25, 0.8, 0.3, 1) backwards;
+}
+@keyframes rise {
+  from { transform: translateY(14px); }
+}
+
+/* night-sky stars: CSS keeps ~120 looping animations off the JS main thread */
+.twinkle {
+  animation: twinkle ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.85; }
+}
+
+/* the prerendered HTML always has the night sky; hide it for sunny visitors until React swaps it */
+:root[data-theme="day"] [data-sky="night"]:only-child { visibility: hidden; }
+
+/* faint film grain over the sky — a static texture, painted once */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+:root[data-theme="day"] body::after { opacity: 0.035; }
