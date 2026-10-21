@@ -30,7 +30,7 @@ const SHOOTING = [
 function StarLayer({ stars, drift, scrollY }) {
   const y = useTransform(scrollY, [0, 3000], [0, drift]);
   return (
-    <motion.div style={{ y }} className="absolute inset-x-0 top-0 h-[140vh]">
+    <motion.div style={{ y }} className="absolute inset-x-0 top-0 h-[140lvh]">
       {stars.map((s, i) => (
         <span
           key={i}
@@ -55,7 +55,7 @@ export default function NightSky() {
   const { scrollY, scrollYProgress } = useScroll();
   // travels across the sky over the whole page: rises top-right, sets bottom-left by the footer
   const moonX = useTransform(scrollYProgress, [0, 1], still ? ["0vw", "0vw"] : ["0vw", "-72vw"]);
-  const moonY = useTransform(scrollYProgress, [0, 0.5, 1], still ? ["0vh", "0vh", "0vh"] : ["0vh", "6vh", "52vh"]);
+  const moonY = useTransform(scrollYProgress, [0, 0.5, 1], still ? ["0lvh", "0lvh", "0lvh"] : ["0lvh", "6lvh", "52lvh"]);
 
   return (
     <div className="absolute inset-0">
@@ -72,7 +72,7 @@ export default function NightSky() {
       <motion.div
         animate={still ? undefined : { x: ["-6%", "6%", "-6%"], opacity: [0.5, 0.85, 0.5] }}
         transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -left-1/4 top-[-10%] h-[70vh] w-[90vw]"
+        className="absolute -left-1/4 top-[-10%] h-[70lvh] w-[90vw]"
         style={{
           background:
             "radial-gradient(ellipse at center, color-mix(in oklab, var(--color-aurora) 13%, transparent), transparent 65%)",
@@ -81,7 +81,7 @@ export default function NightSky() {
       <motion.div
         animate={still ? undefined : { x: ["5%", "-5%", "5%"], opacity: [0.4, 0.75, 0.4] }}
         transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -right-1/4 top-[15%] h-[60vh] w-[80vw]"
+        className="absolute -right-1/4 top-[15%] h-[60lvh] w-[80vw]"
         style={{
           background:
             "radial-gradient(ellipse at center, color-mix(in oklab, var(--color-accent) 11%, transparent), transparent 65%)",

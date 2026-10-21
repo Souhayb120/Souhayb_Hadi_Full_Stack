@@ -10,7 +10,7 @@ const FADE = supportsViewTransition ? 0 : 0.8;
 
 export default function Sky({ theme }) {
   return (
-    <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+    <div aria-hidden="true" className="pointer-events-none fixed inset-x-0 top-0 z-0 h-lvh overflow-hidden">
       <AnimatePresence initial={false}>
         <motion.div
           key={theme}

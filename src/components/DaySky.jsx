@@ -56,7 +56,7 @@ export default function DaySky() {
   const { scrollY, scrollYProgress } = useScroll();
   // travels across the sky over the whole page: rises top-right, sets bottom-left by the footer
   const sunX = useTransform(scrollYProgress, [0, 1], still ? ["0vw", "0vw"] : ["0vw", "-72vw"]);
-  const sunY = useTransform(scrollYProgress, [0, 0.5, 1], still ? ["0vh", "0vh", "0vh"] : ["0vh", "6vh", "52vh"]);
+  const sunY = useTransform(scrollYProgress, [0, 0.5, 1], still ? ["0lvh", "0lvh", "0lvh"] : ["0lvh", "6lvh", "52lvh"]);
 
   return (
     <div className="absolute inset-0">

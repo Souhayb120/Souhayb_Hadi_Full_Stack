@@ -159,14 +159,18 @@ html, body {
 /* the prerendered HTML always has the night sky; hide it for sunny visitors until React swaps it */
 :root[data-theme="day"] [data-sky="night"]:only-child { visibility: hidden; }
 
-/* faint film grain over the sky — a static texture, painted once */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 5;
-  pointer-events: none;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+/* faint film grain over the sky — a static texture, painted once. Mouse devices only:
+   on phones a full-screen fixed layer under the blurred navbar gets re-composited on every
+   scroll frame, which shows up as jank */
+@media (pointer: fine) {
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  :root[data-theme="day"] body::after { opacity: 0.035; }
 }
-:root[data-theme="day"] body::after { opacity: 0.035; }

@@ -47,7 +47,7 @@ export default function Navbar({ theme, onToggleTheme }) {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6, ease }}
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        scrolled || open ? "bg-bg/90 backdrop-blur border-b border-line" : "border-b border-transparent"
+        scrolled || open ? "bg-bg/[0.97] md:bg-bg/90 md:backdrop-blur border-b border-line" : "border-b border-transparent"
       }`}
     >
       <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">

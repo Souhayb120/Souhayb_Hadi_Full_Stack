@@ -62,7 +62,7 @@ export default function ScrollBuddy({ theme }) {
             title="Back to top"
             whileHover={{ scale: 1.12, rotate: [0, -12, 10, -6, 0], transition: { duration: 0.5 } }}
             whileTap={{ scale: 0.85 }}
-            className="relative flex h-12 w-12 items-center justify-center rounded-full border border-line bg-surface/80 text-accent shadow-[0_10px_24px_-12px_rgba(0,0,0,0.6)] backdrop-blur"
+            className="relative flex h-12 w-12 items-center justify-center rounded-full border border-line bg-surface text-accent shadow-[0_10px_24px_-12px_rgba(0,0,0,0.6)] md:bg-surface/80 md:backdrop-blur"
           >
             <svg viewBox="0 0 48 48" className="absolute inset-0 h-full w-full -rotate-90" aria-hidden="true">
               <motion.circle
