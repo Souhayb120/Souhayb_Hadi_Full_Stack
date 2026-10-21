@@ -84,12 +84,14 @@ export default function Navbar({ theme, onToggleTheme }) {
 
       <AnimatePresence>
         {open && (
+          // fade/slide only: animating height to "auto" makes framer-motion measure the menu and
+          // restore the old scroll position, which cancelled the jump to the tapped section
           <motion.nav
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease }}
-            className="overflow-hidden sm:hidden"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2, ease }}
+            className="sm:hidden"
           >
             <div className="flex flex-col px-6 pb-4">
               {links.map((link) => (

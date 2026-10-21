@@ -154,9 +154,12 @@ export default function Hero() {
         </h1>
 
         <p style={riseDelay(0.35)} className="rise mt-6 max-w-2xl text-lg leading-relaxed text-muted">
-          I'm a full-stack developer from {profile.location}, and I recently completed my Full Stack training at Ahmed El Hansali
-          Digital School. Most of what I build sits on the backend: Spring Boot APIs, JWT auth, and
-          MySQL or PostgreSQL databases kept in order with Flyway. Then a React front-end on top.
+          I'm a Full Stack Developer from {profile.location}, working mainly with{" "}
+          <span className="text-ink">Java, Spring Boot, and React</span>. I focus on building secure, reliable
+          backend systems with REST APIs, Spring Security, JWT authentication, and MySQL or PostgreSQL
+          databases managed with Flyway. On the frontend, I use React to create clean, responsive, and
+          user-friendly interfaces. I also enjoy exploring AI integration and turning real-world problems
+          into practical applications.
         </p>
 
         <div style={riseDelay(0.5)} className="rise mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-[15px]">

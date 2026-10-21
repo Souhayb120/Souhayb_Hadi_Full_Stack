@@ -2,7 +2,7 @@ import { useCallback, useEffect, useSyncExternalStore } from "react";
 import { flushSync } from "react-dom";
 
 const THEME_COLOR = { night: "#0a0e1a", day: "#dce5f0" };
-const DURATION = 800;
+const DURATION = 450;
 
 // Browsers with the View Transitions API get a circular reveal from the toggle;
 // the others fall back to a color + sky crossfade.
@@ -73,7 +73,7 @@ export default function useTheme() {
         { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
         {
           duration: DURATION,
-          easing: "cubic-bezier(0.65, 0, 0.35, 1)",
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)", // quick start, soft landing
           pseudoElement: "::view-transition-new(root)",
         }
       );

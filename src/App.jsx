@@ -41,7 +41,7 @@ export default function App() {
   return (
     <MotionConfig reducedMotion="user">
       <div className="bg-bg text-ink min-h-screen">
-        <Sky theme={theme} />
+        <Sky />
         <Navbar theme={theme} onToggleTheme={toggle} />
         <ScrollBuddy theme={theme} />
         <Confetti />
